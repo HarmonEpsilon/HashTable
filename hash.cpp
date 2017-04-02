@@ -1,3 +1,15 @@
+/**
+ * @file Hash.cpp   Contains all relevant functions for
+ *                  Hash class
+ *
+ * @brief
+ *      Implementation of all relevant functions for
+ *      Hash class.
+ * 
+ * @author Landon Mote
+ * @date 4-2-2017
+ */
+
 #include <string>
 #include <fstream>
 #include <iostream>
@@ -11,7 +23,12 @@ using std::string;
 using std::fstream;
 using std::list;
 
-//Hash table constructor
+/**
+ * Hash()
+ * 
+ * Default implicit constructor for the Hash
+ * class
+ */
 Hash::Hash() {
     collisions = 0;
     longestList = 0;
@@ -19,7 +36,15 @@ Hash::Hash() {
     currentAvgListLen = 0.0;
 }
 
-//Remove a string from the Hash table
+/**
+ * remove()
+ *
+ * Removes an entry from the hash table by taking its
+ * hash as an index and removing it from the list at
+ * that index.
+ *
+ * @param input     String to be removed.
+ */
 void Hash::remove(string input) {
     auto index = hf(input);
 
@@ -34,7 +59,11 @@ void Hash::remove(string input) {
     }
 }
 
-//Print strings in the Hash Table
+/**
+ * print()
+ * 
+ * Prints all data in the hash table to the console.
+ */
 void Hash::print() {
     for(int i = 0; i < HASH_TABLE_SIZE; i++) {
         cout << i + 1 << ":\t";
@@ -46,7 +75,14 @@ void Hash::print() {
     }
 }
 
-//Process file from string input
+/**
+ * processFile()
+ * 
+ * Takes in a filename and processes the file for insertion
+ * into the hash table.
+ *
+ * @param input     Filename
+ */
 void Hash::processFile(string input) {
     string from_file;
     ifstream input_file;
@@ -84,7 +120,16 @@ void Hash::processFile(string input) {
     }
 }
 
-//Search through hash table and return true if found requested string
+/**
+ * search()
+ *
+ * Searches through the hash table for a specified string
+ * by hashing the string to generate its index and iterating
+ * through the list at that index. 
+ *
+ * @param input     String to be found
+ * @return          Returns true if found, false if not
+ */
 bool Hash::search(string input) {
     auto index = hf(input);
 
@@ -96,7 +141,15 @@ bool Hash::search(string input) {
     return false;
 }
 
-//Output a given string from the Hash table
+/**
+ * output()
+ *
+ * Prints all data in the hash table to an output
+ * file.
+ *
+ * @param input     Filename to be used for output
+ *                  file.
+ */
 void Hash::output(string input) {
     ofstream output_file;
     
@@ -112,7 +165,11 @@ void Hash::output(string input) {
     }
 }
 
-//Get and print statistics related to the Hash table
+/**
+ * printStats()
+ * 
+ * Prints all statistics relevant to the Hash table.
+ */
 void Hash::printStats() {
     unsigned int sum = 0;
     unsigned int non_empty = 0;
