@@ -15,7 +15,8 @@ using std::list;
 Hash::Hash() {
     collisions = 0;
     longestList = 0;
-    runningAvgListLength = 0;
+    runningAvgListLength = 0.0;
+    currentAvgListLen = 0.0;
 }
 
 //Remove a string from the Hash table
@@ -27,6 +28,7 @@ void Hash::remove(string input) {
              iter++) {
         if (*iter == input) {
             hashTable[index].erase(iter);
+            runningAvgListLength--;
             return;
         }
     }
@@ -70,6 +72,15 @@ void Hash::processFile(string input) {
 
         //Adds the string to the list at that index
         hashTable[index].push_back(from_file);
+        
+        //Increments running average list length
+        runningAvgListLength++;
+
+        //Increments longest list if size of list at the index
+        //is lower than the value of longestList
+        if(hashTable[index].size() < longestList) {
+            longestList++;
+        }
     }
 }
 
@@ -103,6 +114,20 @@ void Hash::output(string input) {
 
 //Get and print statistics related to the Hash table
 void Hash::printStats() {
+    unsigned int sum = 0;
+    unsigned int non_empty = 0;
+
+    for(int i = 0; i < HASH_TABLE_SIZE; i++) {
+        if(hashTable[i].size() != 0) {
+            sum += hashTable[i].size();
+            non_empty++;
+        }
+    }
+
+    currentAvgListLen = double(sum) / double(non_empty);
+
+    runningAvgListLength = (currentAvgListLen + runningAvgListLength) / 2.0;
+
     cout << "Total Collisions: " << collisions << "\n"
          << "Longest List: " << longestList << "\n"
          << "Average List Length: " << runningAvgListLength << endl;
